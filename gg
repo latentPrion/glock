@@ -1,1 +1,4 @@
-git -C `glock -g` $*
+GLOCK_CWD=`glock -g`
+
+echo Glock: CWD is "$GLOCK_CWD".
+git -C "$GLOCK_CWD" $*
