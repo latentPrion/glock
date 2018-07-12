@@ -1,0 +1,48 @@
+GLOCK_PATH_FILE="$HOME"/.glockpath
+
+if [ ! -f "$GLOCK_PATH_FILE" ]; then
+	touch "$GLOCK_PATH_FILE"
+fi
+
+function print_usage()
+{
+	echo "$0: usage: "
+	echo "$0 -s PATH"
+	echo "$0 -g"
+}
+
+if [ $# -lt 1 ]; then
+	print_usage
+	exit 1
+fi
+
+function handle_set() {
+	local path="$1"
+
+	if [ "$path" == "." ]; then
+		path=`pwd`
+	fi
+	echo "$path" >"$GLOCK_PATH_FILE"
+}
+
+function handle_get() {
+	cat "$GLOCK_PATH_FILE"
+}
+
+if [ "$1" == "-s" -o "$1" == "set" -o "$1" == "--set" ]
+then
+	if [ $# -lt 2 ]; then
+		print_usage
+		exit 1;
+	fi
+
+	handle_set "$2";
+elif [ "$1" == "-g" -o "$1" == "get" -o "$1" == "--get" ]
+then
+	handle_get
+else
+	print_usage
+	exit 1
+fi
+
+exit 0
